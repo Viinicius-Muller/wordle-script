@@ -50,10 +50,6 @@ body {
   gap: 30px;
 }
 
-label {
-  color: #000000;
-}
-
 .contains {
   background-color: rgb(252, 255, 85);
 }
