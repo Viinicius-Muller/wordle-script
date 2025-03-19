@@ -1,0 +1,63 @@
+h1,
+h2,
+h3,
+p,
+ul,
+li,
+a,
+body {
+  margin: 0px;
+  color: #ffffff;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.grid {
+  display: grid;
+}
+
+.flex {
+  display: flex;
+}
+
+.container {
+  margin: 0 auto;
+  max-width: 1200px;
+}
+
+.block {
+  background-color: rgb(61, 61, 61);
+  place-content: center;
+  width: 140px;
+  height: 140px;
+}
+
+.letter {
+  text-transform: uppercase;
+  font-size: 2.8rem;
+  justify-self: center;
+}
+
+.words-row {
+  gap: 15px;
+}
+
+.words-bg {
+  margin-top: 25px;
+  place-content: center;
+  gap: 30px;
+}
+
+label {
+  color: #000000;
+}
+
+.contains {
+  background-color: rgb(252, 255, 85);
+}
+
+.inPlace {
+  background-color: rgb(85, 255, 122);
+}
