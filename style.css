@@ -15,6 +15,10 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+.hidden {
+  display: none;
+}
+
 .grid {
   display: grid;
 }
@@ -29,36 +33,59 @@ body {
 }
 
 /* Header */
-.header {
-  position: relative;
+.header-bg {
   padding: 20px 0px;
-  margin-bottom: 30px;
+}
+
+.header {
+  place-self: center;
+  align-items: center;
+  gap: 30px;
+  background: #4b4b4b;
+  padding: 10px 24px;
+  border-radius: 5px;
 }
 
 .title {
-  color: #dadce0;
-  letter-spacing: 2.5px;
+  color: #b3b3b3;
+  letter-spacing: 3.5px;
+  font-size: 3rem;
   justify-self: center;
 }
 
 /* Main */
 
-/* Restart Button */
+/* Buttons */
 .restart-button {
-  color: #ffffff;
-  font-size: 2rem;
-  font-weight: 600;
-  padding: 10px 20px;
   border: none;
-  border-radius: 3px;
-  background: #222222;
-  justify-self: center;
-  transition: background-color 0.5s;
+  background: none;
+  padding: 5px 10px;
 }
 
 .restart-button:hover {
   cursor: pointer;
-  background: #454545;
+}
+
+.restart-icon {
+  height: 36px;
+  position: relative;
+  top: 1px;
+}
+
+.settings-button {
+  border: none;
+  background: none;
+  padding: 5px 10px;
+}
+
+.settings-button:hover {
+  cursor: pointer;
+}
+
+.settings-icon {
+  height: 38px;
+  position: relative;
+  top: 4px;
 }
 
 /* PopUp */
@@ -66,7 +93,7 @@ body {
   z-index: 1000;
   position: absolute;
   left: 50%;
-  top: 190px;
+  top: 130px;
   background: #565656;
   padding: 5px 10px;
   border-radius: 3px;
@@ -74,7 +101,7 @@ body {
 }
 
 .popup-message {
-  font-size: 1.15rem;
+  font-size: 1.3rem;
 }
 
 @keyframes pop-animation {
@@ -108,20 +135,80 @@ body {
   opacity: 0;
 }
 
-/* Game stuff */
+/* Settings Modal */
+.settings-modal {
+  position: fixed;
+  left: 50%;
+  transform: translate(-50%);
+  transition: 1s;
+  z-index: 1000;
+}
+
+.settings {
+  padding: 30px 20px;
+  background: #222222;
+  flex-direction: column;
+  border-radius: 5px;
+  gap: 20px;
+}
+
+.settings label {
+  font-size: 1.4rem;
+}
+
+input::-webkit-inner-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+input:focus {
+  outline: none;
+}
+
+#muteCheckbox {
+  accent-color: #4b4b4b;
+}
+
+#maxAttemps {
+  color: #ffffff;
+  font-size: 1.4rem;
+  max-width: 30px;
+  height: 34px;
+  background: #4b4b4b;
+  border-radius: 4px;
+  justify-items: center;
+  border: 2px solid #222222;
+}
+
+.apply-attempts {
+  color: #ffffff;
+  border: none;
+  border-radius: 2px;
+  padding: 5px 10px;
+  font-size: 1.4rem;
+  background: #4b4b4b;
+  transition: background-color 0.5s;
+}
+
+.apply-attempts:hover {
+  cursor: pointer;
+  background: #94335b;
+}
+
+/* Game Stuff */
 .block {
   border: solid 3px #565656;
   border-radius: 5px;
   background-color: #404040;
   place-content: center;
-  width: 80px;
-  height: 80px;
+  width: 50px;
+  height: 50px;
   transition: background 0.5s;
 }
 
 .letter {
   text-transform: uppercase;
-  font-size: 2.8rem;
+  font-size: 2.2rem;
   justify-self: center;
 }
 
@@ -130,7 +217,8 @@ body {
 }
 
 .words-bg {
-  margin-top: 60px;
+  margin-top: 20px;
+  margin-bottom: 35px;
   place-content: center;
   gap: 10px;
 }
@@ -198,4 +286,35 @@ body {
     background: #ceb02c;
     transform: scaleY(1);
   }
+}
+
+/* Keyboard */
+
+.remove_char {
+  display: flex;
+  place-items: center;
+  padding: 10px 20px;
+}
+
+.remove_char img {
+  height: 26px;
+}
+.keyboard-row {
+  margin-bottom: 10px;
+  place-content: center;
+  gap: 5px;
+}
+
+.key {
+  background: #565656;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #ffffff;
+  border: none;
+  min-width: 35px;
+  min-height: 45px;
+}
+
+.key:hover {
+  cursor: pointer;
 }

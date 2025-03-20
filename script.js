@@ -6,13 +6,33 @@ const restartButton = document.querySelector(".restart-button");
 const popupEl = document.querySelector(".popup");
 const popupMessage = document.querySelector(".popup-message");
 
+//Settings
+let isMuted = false;
+
+const settingsButton = document.querySelector(".settings-button");
+const settingsModal = document.querySelector(".settings-modal");
+const maxAttempsInput = document.getElementById("maxAttemps");
+const applyAttemptsBtn = document.querySelector(".apply-attempts");
+const muteSoundsBtn = document.getElementById("muteCheckbox");
+
+muteSoundsBtn.addEventListener("input", function () {
+  isMuted = !isMuted;
+});
+
+//Keyboard
+const keyboard = document.querySelector(".keyboard-bg");
+const keyboardRows = document.querySelectorAll(".keyboard-row");
+const keys = document.querySelectorAll(".key");
+const firstKey = document.querySelector(".key");
+const deafultKeyBG = firstKey.style.background;
+
 //Sounds
+const cardflipSFX = new Audio("./sounds/cardflip.mp3");
+const winSFX = new Audio("./sounds/win.mp3");
 
 //Generate new word
 let word;
 let allWords;
-
-let a = "";
 
 //Words API
 function getJSON(url) {
@@ -37,14 +57,23 @@ let blocks;
 let curTry = 0;
 let maxTries = 6;
 let won = false;
+
+//Inputs Variables
 let compatibleLetters = "abcdefghijklmnopqrstuvwxyz";
-
 let curTypingLetter = 0;
-
 let inputWord = "";
 let rightWord = "";
 
-//POPUP Events
+//Timer/Delay function
+function delay(seconds) {
+  return new Promise((res) => {
+    setTimeout(() => {
+      res();
+    }, seconds * 1000);
+  });
+}
+
+//Popup Events
 let animTimeOut;
 
 function removepopup() {
@@ -55,7 +84,7 @@ function removepopup() {
   popupEl.classList.remove("popanim");
 }
 
-function popUpAnim(err = "") {
+function popUpAnim(err = "", lost = false) {
   //Format classList
   removepopup();
   popupEl.classList.remove("inactive");
@@ -65,9 +94,11 @@ function popUpAnim(err = "") {
     popupEl.classList.add("error");
     popupEl.classList.add("popanim");
 
-    animTimeOut = setTimeout(() => {
-      removepopup();
-    }, 2000);
+    if (!lost) {
+      animTimeOut = setTimeout(() => {
+        removepopup();
+      }, 2000);
+    }
   } else {
     popupMessage.textContent = "You Win!";
     popupEl.classList.add("won");
@@ -80,11 +111,39 @@ class App {
   constructor() {
     this.#cooldown = false;
     restartButton.addEventListener("click", this.restartGame.bind(this));
+    keyboardRows.forEach((keyboard) => {
+      keyboard.addEventListener("click", this.inputByKeyboard.bind(this));
+    });
     window.addEventListener("keydown", this.inputsHandler.bind(this));
+    settingsButton.addEventListener("click", this.openCloseModal);
+    applyAttemptsBtn.addEventListener("click", this.applyAttempts.bind(this));
+  }
+
+  applyAttempts() {
+    const attemps = Number(maxAttempsInput.value);
+    if (attemps > 8 || attemps < 1) return;
+    maxTries = attemps;
+    this.restartGame();
+  }
+
+  openCloseModal() {
+    settingsModal.classList.toggle("hidden");
+  }
+
+  inputByKeyboard(e) {
+    //If isn't key return
+    if (e.target.tagName === "IMG") {
+      this.inputsHandler(e.target.parentElement.dataset.key);
+      return;
+    }
+    if (!e.target.parentElement.querySelector(".key")) return;
+    this.inputsHandler(e.target.dataset.key);
   }
 
   inputsHandler(e) {
-    const key = e.key.toLowerCase();
+    let key;
+    if (e.key) key = e.key.toLowerCase();
+    else key = e;
 
     //Check if ended
     if (won) return;
@@ -103,6 +162,11 @@ class App {
 
     //Add letter to inputWord
     inputWord += key;
+    if (!isMuted) {
+      const typeSFX = new Audio("./sounds/type.mp3");
+      typeSFX.play();
+      typeSFX.volume = 0.15;
+    }
 
     //Add blocks
     let blockLetter = blocks[curTypingLetter].querySelector(".letter");
@@ -110,11 +174,17 @@ class App {
 
     //Add index
     curTypingLetter++;
-    console.log(inputWord);
   }
 
   removeLetter() {
     if (curTypingLetter <= 0) return;
+
+    if (!isMuted) {
+      const removeSFX = new Audio("./sounds/backspace.mp3");
+      removeSFX.volume = 0.1;
+      removeSFX.play();
+    }
+
     inputWord = inputWord.slice(0, -1);
     curTypingLetter--;
 
@@ -126,8 +196,11 @@ class App {
   }
 
   playAnimation(block, index) {
-    setTimeout(() => {
+    delay(index * 0.35).then(() => {
       const letterBlock = block.querySelector(".letter");
+      const letterInKeyboard = keyboard.querySelector(
+        `[data-key='${letterBlock.textContent}']`
+      );
 
       block.classList.remove("inPlace");
       block.classList.remove("contains");
@@ -135,9 +208,16 @@ class App {
       if (rightWord.includes(letterBlock.textContent)) {
         if (rightWord[index] === letterBlock.textContent) {
           block.classList.add("inPlace");
-        } else block.classList.add("contains");
-      } else block.classList.add("incorrect");
-    }, index * 350);
+          letterInKeyboard.style.background = "#6aaa64";
+        } else {
+          block.classList.add("contains");
+          letterInKeyboard.style.background = "#ceb02c";
+        }
+      } else {
+        block.classList.add("incorrect");
+        letterInKeyboard.style.background = "#222222";
+      }
+    });
   }
 
   submitTry() {
@@ -153,16 +233,19 @@ class App {
     });
 
     this.#cooldown = true;
-    setTimeout(() => (this.#cooldown = false), 1500);
+    delay(1.5).then(() => (this.#cooldown = false));
 
+    curTry++;
     //Correct guess
     if (inputWord === rightWord) {
       won = true;
+      if (!isMuted) winSFX.play();
       popUpAnim();
+    } else if (curTry === maxTries) {
+      popUpAnim(`You lose: ${rightWord.toUpperCase()}`, true);
     }
 
     //Add try and reset stuff
-    curTry++;
     blocks = document.querySelectorAll(`.block-${curTry}`);
 
     inputWord = "";
@@ -201,6 +284,7 @@ class App {
 
   restartGame() {
     wordsBackground.innerHTML = "";
+    keys.forEach((key) => (key.style.background = deafultKeyBG));
     removepopup();
     this.startGame(maxTries);
   }

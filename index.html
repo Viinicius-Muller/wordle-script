@@ -7,29 +7,85 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <header class="grid header">
-      <h1 class="title">Wordle Script</h1>
+    <header class="grid header-bg">
+      <div class="header flex">
+        <button class="restart-button" onclick="this.blur();">
+          <img src="./icons/restart.svg" alt="Restart" class="restart-icon" />
+        </button>
+        <h1 class="title">Wordle Script</h1>
+        <button class="settings-button" onclick="this.blur();">
+          <img
+            src="./icons/settings.svg"
+            alt="Settings"
+            class="settings-icon"
+          />
+        </button>
+      </div>
     </header>
     <main>
-      <div class="grid"><button class="restart-button">RESTART</button></div>
+      <div class="grid"></div>
       <div class="popup inactive">
-        <p class="popup-message">Word not found</p>
+        <p class="popup-message"></p>
       </div>
-      <section class="container grid words-bg">
-        <!-- <div class="flex words-row">
-          <div class="block block-0"><p class="letter"></p></div>
-          <div class="block block-0"><p class="letter"></p></div>
-          <div class="block block-0"><p class="letter"></p></div>
-          <div class="block block-0"><p class="letter"></p></div>
-          <div class="block block-0"><p class="letter"></p></div>
+      <div class="settings-modal hidden">
+        <div class="flex settings">
+          <div>
+            <label for="maxAttemps">Max Attempts (1-8)</label>
+            <input
+              type="number"
+              name="maxAttemps"
+              id="maxAttemps"
+              min="1"
+              max="8"
+            />
+            <button class="apply-attempts">APPLY</button>
+          </div>
+          <div>
+            <label for="muteCheckbox">Mute Sounds</label>
+            <input type="checkbox" name="muteCheckbox" id="muteCheckbox" />
+          </div>
         </div>
-        <div class="flex words-row">
-          <div class="block block-1"><p class="letter"></p></div>
-          <div class="block block-1"><p class="letter"></p></div>
-          <div class="block block-1"><p class="letter"></p></div>
-          <div class="block block-1"><p class="letter"></p></div>
-          <div class="block block-1"><p class="letter"></p></div>
-        </div> -->
+      </div>
+      <section class="container grid words-bg"></section>
+      <section class="keyboard-bg">
+        <div class="keyboard-row flex">
+          <button class="key" data-key="q" onclick="this.blur();">Q</button>
+          <button class="key" data-key="w" onclick="this.blur();">W</button>
+          <button class="key" data-key="e" onclick="this.blur();">E</button>
+          <button class="key" data-key="r" onclick="this.blur();">R</button>
+          <button class="key" data-key="t" onclick="this.blur();">T</button>
+          <button class="key" data-key="y" onclick="this.blur();">Y</button>
+          <button class="key" data-key="u" onclick="this.blur();">U</button>
+          <button class="key" data-key="i" onclick="this.blur();">I</button>
+          <button class="key" data-key="o" onclick="this.blur();">O</button>
+          <button class="key" data-key="p" onclick="this.blur();">P</button>
+        </div>
+        <div class="keyboard-row flex">
+          <button class="key" data-key="a" onclick="this.blur();">A</button>
+          <button class="key" data-key="s" onclick="this.blur();">S</button>
+          <button class="key" data-key="d" onclick="this.blur();">D</button>
+          <button class="key" data-key="f" onclick="this.blur();">F</button>
+          <button class="key" data-key="g" onclick="this.blur();">G</button>
+          <button class="key" data-key="h" onclick="this.blur();">H</button>
+          <button class="key" data-key="j" onclick="this.blur();">J</button>
+          <button class="key" data-key="k" onclick="this.blur();">K</button>
+          <button class="key" data-key="l" onclick="this.blur();">L</button>
+        </div>
+        <div class="keyboard-row flex">
+          <button class="key" data-key="enter" onclick="this.blur();">
+            ENTER
+          </button>
+          <button class="key" data-key="z" onclick="this.blur();">Z</button>
+          <button class="key" data-key="x" onclick="this.blur();">X</button>
+          <button class="key" data-key="c" onclick="this.blur();">C</button>
+          <button class="key" data-key="v" onclick="this.blur();">V</button>
+          <button class="key" data-key="b" onclick="this.blur();">B</button>
+          <button class="key" data-key="n" onclick="this.blur();">N</button>
+          <button class="key" data-key="m" onclick="this.blur();">M</button>
+          <button class="key remove_char" data-key="backspace">
+            <img src="./icons/delete.svg" alt="remove character" cla />
+          </button>
+        </div>
       </section>
     </main>
   </body>
