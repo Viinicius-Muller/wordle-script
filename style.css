@@ -11,6 +11,7 @@ body {
 }
 
 body {
+  background-color: #333333;
   font-family: Arial, Helvetica, sans-serif;
 }
 
@@ -27,11 +28,95 @@ body {
   max-width: 1200px;
 }
 
+/* Header */
+.header {
+  position: relative;
+  padding: 20px 0px;
+  margin-bottom: 30px;
+}
+
+.title {
+  color: #dadce0;
+  letter-spacing: 2.5px;
+  justify-self: center;
+}
+
+/* Main */
+
+/* Restart Button */
+.restart-button {
+  color: #ffffff;
+  font-size: 2rem;
+  font-weight: 600;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 3px;
+  background: #222222;
+  justify-self: center;
+  transition: background-color 0.5s;
+}
+
+.restart-button:hover {
+  cursor: pointer;
+  background: #454545;
+}
+
+/* PopUp */
+.popup {
+  z-index: 1000;
+  position: absolute;
+  left: 50%;
+  top: 190px;
+  background: #565656;
+  padding: 5px 10px;
+  border-radius: 3px;
+  transform: translate(-50%, -50%);
+}
+
+.popup-message {
+  font-size: 1.15rem;
+}
+
+@keyframes pop-animation {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.5);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+}
+
+.popanim {
+  animation: pop-animation 0.5s ease-out forwards;
+}
+
+.won {
+  background: #6aaa64;
+}
+
+.error {
+  background: #bb5781;
+}
+
+.inactive {
+  opacity: 0;
+}
+
+/* Game stuff */
 .block {
-  background-color: rgb(61, 61, 61);
+  border: solid 3px #565656;
+  border-radius: 5px;
+  background-color: #404040;
   place-content: center;
-  width: 140px;
-  height: 140px;
+  width: 80px;
+  height: 80px;
+  transition: background 0.5s;
 }
 
 .letter {
@@ -41,19 +126,76 @@ body {
 }
 
 .words-row {
-  gap: 15px;
+  gap: 5px;
 }
 
 .words-bg {
-  margin-top: 25px;
+  margin-top: 60px;
   place-content: center;
-  gap: 30px;
+  gap: 10px;
 }
 
+/* Try Animations */
+
 .contains {
-  background-color: rgb(252, 255, 85);
+  animation: reveal-contains 0.4s forwards;
 }
 
 .inPlace {
-  background-color: rgb(85, 255, 122);
+  animation: reveal-in-place 0.4s forwards;
+}
+
+.incorrect {
+  animation: reveal-incorrect 0.4s forwards;
+}
+
+@keyframes reveal-in-place {
+  0% {
+    transform: scaleY(1);
+  }
+  49% {
+    background: #333333;
+  }
+  50% {
+    transform: scaleY(0);
+    background: #6aaa64;
+  }
+  100% {
+    background: #6aaa64;
+    transform: scaleY(1);
+  }
+}
+
+@keyframes reveal-incorrect {
+  0% {
+    transform: scaleY(1);
+  }
+  49% {
+    background: #333333;
+  }
+  50% {
+    transform: scaleY(0);
+    background: #222222;
+  }
+  100% {
+    background: #222222;
+    transform: scaleY(1);
+  }
+}
+
+@keyframes reveal-contains {
+  0% {
+    transform: scaleY(1);
+  }
+  49% {
+    background: #333333;
+  }
+  50% {
+    transform: scaleY(0);
+    background: #ceb02c;
+  }
+  100% {
+    background: #ceb02c;
+    transform: scaleY(1);
+  }
 }
